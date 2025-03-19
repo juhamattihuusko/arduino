@@ -1,0 +1,70 @@
+// Kytkentäpinnit
+const int trigPin = 2;
+const int echoPin = 3;
+float L=0.2;
+
+// Lähetetyn ja heijastuneen pulssin välinen aikaero mikrosekunteina
+long timeDifference = 0;
+
+// Aika, joka odotellaan lähetettyjen pulssien välillä (millisekunteja)
+const int waitTime = 500;
+
+
+
+void setup() {
+  // Avataan sarjayhteys
+  Serial.begin(9600);
+
+  // Määritetään pinnien moodit
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  // Asetetaan liipaisupinni tilaan LOW, jotta ei lähetetä vielä mitään
+  digitalWrite(trigPin, LOW);
+}
+
+
+
+void loop() {
+  // Määritetään pulssien välinen aika
+  float s=0;
+  for(int k=0;k<10;k++) {
+  timeDifference = readSensor();
+  s=s+timeDifference;
+  delay(10);
+  }
+  timeDifference=s/10;
+
+  // Tulostetaan aikaero sarjaporttiin
+  Serial.print("Aikaero: ");
+  Serial.println(timeDifference);
+  //float k=331/449.94;
+  float c=2*L*1000000/(timeDifference);
+  Serial.print("Äänen nopeus c: ");
+  Serial.println(c);
+  float c0=331.3;
+  float k=0.606;
+  float T=(c-c0)/k;
+  Serial.print("Lämpötila: ");
+  Serial.println(T);
+
+
+  // Odotellaan ennen seuraavaa luotausta
+  delay(waitTime);
+}
+
+
+
+// Funktio, joka lukee ultraäänisensorin
+long readSensor() {
+  // Sensori lähettää purskeen, kun liipaisupinni on tilassa HIGH vähintään 10 mikrosekuntia
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Luetaan signaali:
+  // Kun purske lähetetään, menee kaikupinni tilaan HIGH.
+  // Kun kaiku saapuu, menee kaikupinni tilaan LOW
+  // Tähän kuluva aika saadaan määritettyä funktiolla pulseIn
+  return pulseIn(echoPin, HIGH);
+}

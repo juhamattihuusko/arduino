@@ -1,0 +1,49 @@
+#include <stdio.h>
+// C++ implementation for dot product
+// and cross product of two vector.
+
+//2x+3y=5
+//3x+3y=6
+
+int main() {  
+    int vect_A[] = { 3, -5, 4 };
+    int vect_B[] = { 2, 6, 5 };
+    int vect_x[] = {1,3,4};
+    int vect_y[] = {1,2,2};
+    int vect_yks[] = {1,1,1};
+    float Aa=dotProduct(vect_x, vect_x, 3);
+    int Ab=dotProduct(vect_x, vect_yks, 3);
+    int Ac=dotProduct(vect_x, vect_yks, 3);
+    int Ad=dotProduct(vect_yks, vect_yks, 3);
+    int U=dotProduct(vect_x, vect_y, 3);
+    int V=dotProduct(vect_yks, vect_y, 3);
+    double aa=(U*Ad-Ab*V)/(Aa*Ad-Ab*Ac);
+    double bb=(Aa*V-U*Ac)/(Aa*Ad-Ab*Ac);
+    int a=dotProduct(vect_A, vect_B, 3);
+    printf("Result is = %d\n", a);
+    printf("Aa is = %d\n", Aa);
+    printf("Ab is = %d\n", Ab);
+    printf("Ac is = %d\n", Ac);
+    printf("Ad is = %d\n", Ad);
+    printf("U is = %d\n", U);
+    printf("V is = %d\n", V);
+    printf("aa is = %f\n", aa);
+    printf("bb is = %f\n", bb);
+    // 5/14=0.357
+    // 5/7=0.714
+    
+    printf("%.2f\n", aa);
+    printf("%.2f\n", bb);
+}
+
+int dotProduct(int vect_A[], int vect_B[])
+{
+
+    int product = 0;
+
+    // Loop for calculate dot product
+    for (int i = 0; i < 3; i++)
+
+        product = product + vect_A[i] * vect_B[i];
+    return product;
+}

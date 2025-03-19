@@ -1,0 +1,38 @@
+int x;
+int s;
+float VperVout;
+float R;
+float T;
+float a;
+float b;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(14,INPUT);
+  a=1.316/1000;
+  b=2.128/10000;
+}
+
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  s=0;
+  for (int k = 1; k < 11; k++) {
+  x=analogRead(14);
+  s=s+x;
+  delay(100);
+  }
+  x=s/10;
+  //VperVout=1023/x;
+  //R=10000*(1023/x-1);
+  //R=10*(1023-x);
+  R=10230000/x-10000;
+  T=1/(a+b*log(R))-273.15;
+  Serial.println(x);
+  Serial.println(R);
+  //Serial.println(T);
+  Serial.print(T);Serial.println(' C');
+  delay(1000);
+}
